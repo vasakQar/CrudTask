@@ -49,7 +49,7 @@ class PostController extends Controller
             $image = $request['image'];
             $image_name = $image->getClientOriginalName();
             $path = $request->image->storeAs($destination_path,$image_name);
-//            $image->move($destination_path, $image_name);
+            $image->move($destination_path, $image_name);
             $request->image = $image_name;
         }
 
@@ -107,6 +107,7 @@ class PostController extends Controller
 
         if (is_file(storage_path('app/public/images/'.$image->getClientOriginalName()))){
             Storage::delete('/public/images/'.$post->image);
+            unlink('public/images/'.$post->image);
         }
 
         $post = Post::findOrFail($post->id);
