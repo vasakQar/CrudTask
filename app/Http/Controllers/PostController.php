@@ -47,7 +47,7 @@ class PostController extends Controller
         if ($request->image){
             $destination_path = 'public/images';
             $image = $request['image'];
-            $image_name = $image->getClientOriginalName();
+            $image_name = time().'.'.$image->getClientOriginalName();
             $path = $request->image->storeAs($destination_path,$image_name);
             $image->move($destination_path, $image_name);
             $request->image = $image_name;
@@ -99,13 +99,13 @@ class PostController extends Controller
         if ($request->image){
             $destination_path = 'public/images';
             $image = $request['image'];
-            $image_name = $image->getClientOriginalName();
+            $image_name = time().'.'.$image->getClientOriginalName();
             $path = $request->image->storeAs($destination_path,$image_name);
             $image->move($destination_path, $image_name);
             $request->image = $image_name;
         }
 
-        if (is_file(storage_path('app/public/images/'.$image->getClientOriginalName()))){
+        if (is_file(storage_path('app/public/images/'.$image->getClientOriginalName())) && is_file('public/images/'.$post->image)){
             Storage::delete('/public/images/'.$post->image);
             unlink('public/images/'.$post->image);
         }
@@ -129,8 +129,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if (is_file(storage_path('app/public/images/'.$post->image))){
+        if (is_file(storage_path('app/public/images/'.$post->image)) && is_file('public/images/'.$post->image)){
             Storage::delete('/public/images/'.$post->image);
+            unlink('public/images/'.$post->image);
         }
         $post->delete();
         return redirect()->route('home')->with('message', 'Post has been deleted successfully!');
