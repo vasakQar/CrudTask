@@ -28,6 +28,9 @@ class HomeController extends Controller
     public function index()
     {
         $posts = Post::with('user')->get();
+        if ($posts == null){
+            abort(404);
+        }
         $user_image = Auth::user()->image;
         return view('home',compact('posts','user_image'));
     }

@@ -13,3 +13,10 @@ require('./bootstrap');
  */
 
 require('./components/Example');
+
+import jquery from 'jquery/dist/jquery.slim'
+import 'bootstrap-sass'
+import 'datatables.net';
+import dt from 'datatables.net-bs';
+
+window.$ = window.jQuery = jquery;
